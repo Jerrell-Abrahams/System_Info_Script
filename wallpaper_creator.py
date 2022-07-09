@@ -1,11 +1,13 @@
 from PIL import Image, ImageDraw, ImageFont
 import main
 import subprocess
+import time
+import os
 
 specs = main
 
 def add_info():
-    with Image.open("1127004.jpg", "r") as img:
+    with Image.open("wallpaper.jpg", "r") as img:
         width, height = img.size
         processed_img = ImageDraw.Draw(img)
         font = ImageFont.truetype(font="verdana.ttf", size=80)
@@ -29,12 +31,19 @@ def add_info():
             padding += 90
 
         img.save(fr"{specs.current_path}\specs_image.jpg", format="JPEG")
+        img.close()
 
-        image_loci = f'"{specs.current_path}\specs_image.jpg"'
 
-        # Change background image
-        subprocess.run(f'reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /d {image_loci} /f')
-        subprocess.run("RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters")
-        subprocess.run("RUNDLL32.EXE user32.dll, UpdatePerUserSystemParameters")
+
+
+
+def update_screen():
+    # Change background image
+    image_loci = f'"{specs.current_path}\specs_image.jpg"'
+    subprocess.run(f'reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /d {image_loci} /f')
+    time.sleep(3)
+    subprocess.run("RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters")
+
 
 add_info()
+update_screen()

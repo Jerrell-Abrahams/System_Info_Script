@@ -6,12 +6,13 @@ import os
 import subprocess
 
 
+
 # A function that converts bytes to gigabytes
 def bytes_to_gb(byte):
     return byte * 9.31 * 10**-10
 
 # Creates the battery report and saves it to the current directory
-
+battery_report = os.system(rf"powercfg /batteryreport")
 
 
 # Accesses the battery report and extracts the needed values
@@ -24,7 +25,7 @@ with open("battery-report.html", encoding="UTF-8") as file:
     file.close()
 
 
-battery_report = os.system(rf"powercfg /batteryreport")
+
 battery_health = round(int(battery_charge_capacity) / int(battery_design_capacity) * 100)  # Battery health in percentage
 cpu = cpuinfo.get_cpu_info()["brand_raw"]  # Cpu details / generation
 ram = round(bytes_to_gb(psutil.virtual_memory()[0]))  # Amount of Ram installed
