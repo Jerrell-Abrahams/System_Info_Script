@@ -25,7 +25,7 @@ def add_info():
         processed_img.text((width / 9, height / 3 + 350), text=f"OS: {operating_sys}", font=font)
         processed_img.text((width / 9, height / 3 + 450), text=f"HDD size: {hdd} GB {hdd_type}", font=font)
         processed_img.text((width / 9, height / 3 + 550), text=f"Battery health: {battery_health} %", font=font)
-        processed_img.text((width / 9, height / 3 + 650), text=f"Video Controller: {video_controller}", font=font)
+        processed_img.text((width / 9, height / 3 + 650), text=f"Video controller: {video_controller}", font=font)
         processed_img.text((width / 1.6, height / 3 + 50), text=f"Number of cores: {num_of_cores} Core(s)", font=font)
         processed_img.text((width / 1.6, height / 3 + 150), text=f"Peripherals:", font=font)
 
@@ -46,6 +46,7 @@ def update_screen():
     time.sleep(3)
     subprocess.run("RUNDLL32.EXE user32.dll, UpdatePerUserSystemParameters")
     print("Done!")
+
 
 
 # A function that converts bytes to gigabytes
@@ -81,9 +82,9 @@ processor_type = re.findall("\d+", str(subprocess.run("wmic cpu get datawidth", 
 video_controller = " ".join(re.split("\W+", subprocess.run("wmic path win32_VideoController get name", capture_output=True, text=True).stdout)[1:])
 operating_sys_arch = re.findall("\d+", str(subprocess.run("wmic os get osarchitecture", capture_output=True).stdout))[0]
 operating_sys = " ".join(re.split("\W+", str(subprocess.run("wmic os get caption", capture_output=True, text=True).stdout))[1:-1])
-hdd = round(bytes_to_gb(int(re.findall("\d+", str(subprocess.run("wmic diskdrive get size", capture_output=True).stdout))[0])))  # Size of C:\
+hdd = round(bytes_to_gb(int(re.findall("\d+", str(subprocess.run("wmic diskdrive get size", capture_output=True).stdout))[-1])))  # Size of C:\
 hdd_type = re.findall(r"[A-Z][A-Z][A-Z]", str(subprocess.run("powershell get-physicaldisk | format-table mediatype", capture_output=True).stdout))[0]
-num_of_cores = re.findall('\d', subprocess.run('wmic cpu get numberoflogicalprocessors', capture_output=True, text=True).stdout)[0]
+num_of_cores = re.findall('\d', subprocess.run('wmic cpu get numberofcores', capture_output=True, text=True).stdout)[0]
 peripherals = re.split("\W+\s", str(subprocess.run("wmic portconnector get externalreferencedesignator", capture_output=True, text=True).stdout))[1:-1]
 system_model = ' '.join(re.split("\W+",subprocess.run("wmic csproduct get name", text=True, capture_output=True).stdout)[1:-1])
 system_brand = ' '.join(re.split("\W+",subprocess.run("wmic csproduct get vendor", text=True, capture_output=True).stdout)[1:-1])
