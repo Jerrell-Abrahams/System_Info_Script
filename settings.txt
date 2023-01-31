@@ -1,0 +1,3 @@
+specsFont=60
+headingFont=100
+peripheralsFont=40
